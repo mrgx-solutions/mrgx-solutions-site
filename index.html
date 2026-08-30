@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MRGX Solutions | Under Construction</title>
+  <meta name="description" content="MRGX Solutions website is under construction. Engineering, Maintenance, Reliability and Asset Management Solutions." />
+  <style>
+    :root {
+      --bg: #0b1220;
+      --bg2: #101a2d;
+      --primary: #1fd1a5;
+      --primary-soft: rgba(31, 209, 165, 0.15);
+      --accent: #f5b942;
+      --text: #eaf2ff;
+      --muted: #a9b4c7;
+      --line: rgba(255,255,255,0.08);
+      --card: rgba(255,255,255,0.05);
+      --shadow: 0 20px 60px rgba(0,0,0,0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(31,209,165,0.12), transparent 30%),
+        radial-gradient(circle at bottom left, rgba(245,185,66,0.08), transparent 25%),
+        linear-gradient(135deg, var(--bg), var(--bg2));
+      color: var(--text);
+      min-height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Animated engineering grid */
+    .grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+      background-size: 45px 45px;
+      mask-image: radial-gradient(circle at center, black 35%, transparent 85%);
+      animation: drift 18s linear infinite;
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    @keyframes drift {
+      0% { transform: translate(0,0); }
+      50% { transform: translate(-12px, -10px); }
+      100% { transform: translate(0,0); }
+    }
+
+    /* Scan line */
+    .scan-line {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+      box-shadow: 0 0 14px var(--primary);
+      animation: scan 6s linear infinite;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    @keyframes scan {
+      0% { top: 0%; }
+      100% { top: 100%; }
+    }
+
+    /* Floating nodes */
+    .node {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 20px var(--primary);
+      animation: pulse 2.5s infinite ease-in-out;
+    }
+
+    .node::after {
+      content: "";
+      position: absolute;
+      inset: -10px;
+      border: 1px solid rgba(31,209,165,0.25);
+      border-radius: 50%;
+      animation: ripple 2.5s infinite ease-out;
+    }
+
+    .node.n1 { top: 18%; left: 12%; animation-delay: 0s; }
+    .node.n2 { top: 70%; left: 18%; animation-delay: 0.8s; }
+    .node.n3 { top: 24%; right: 16%; animation-delay: 1.2s; }
+    .node.n4 { bottom: 18%; right: 12%; animation-delay: 0.5s; }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.2); opacity: 1; }
+    }
+
+    @keyframes ripple {
+      0% { transform: scale(0.8); opacity: 0.8; }
+      100% { transform: scale(2.4); opacity: 0; }
+    }
+
+    /* Gear styling */
+    .gear-wrap {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .gear {
+      position: absolute;
+      border: 2px solid rgba(245,185,66,0.6);
+      border-radius: 50%;
+      box-shadow: 0 0 25px rgba(245,185,66,0.2);
+    }
+
+    .gear::before, .gear::after {
+      content: "";
+      position: absolute;
+      inset: -10px;
+      border-radius: 50%;
+      border: 2px dashed rgba(245,185,66,0.2);
+    }
+
+    .gear.g1 {
+      width: 100px;
+      height: 100px;
+      top: 16%;
+      right: 10%;
+      animation: rotateCW 16s linear infinite;
+    }
+
+    .gear.g2 {
+      width: 60px;
+      height: 60px;
+      top: 24%;
+      right: 18%;
+      animation: rotateCCW 10s linear infinite;
+    }
+
+    .gear.g3 {
+      width: 80px;
+      height: 80px;
+      bottom: 12%;
+      left: 10%;
+      animation: rotateCCW 14s linear infinite;
+      border-color: rgba(31,209,165,0.6);
+    }
+
+    @keyframes rotateCW {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes rotateCCW {
+      from { transform: rotate(360deg); }
+      to { transform: rotate(0deg); }
+    }
+
+    .container {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .card {
+      width: min(920px, 100%);
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      padding: 42px 36px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.06) 30%, transparent 60%);
+      transform: translateX(-100%);
+      animation: sheen 7s infinite;
+    }
+
+    @keyframes sheen {
+      0% { transform: translateX(-120%); }
+      40% { transform: translateX(120%); }
+      100% { transform: translateX(120%); }
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      border: 1px solid rgba(31,209,165,0.35);
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 22px;
+      letter-spacing: 0.3px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 10px var(--primary);
+      animation: pulse 1.8s infinite;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 4rem);
+      line-height: 1.05;
+      margin-bottom: 14px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .brand {
+      color: var(--accent);
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 760px;
+      margin-bottom: 28px;
+    }
+
+    .services {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .service {
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.035);
+      color: #dce7f7;
+      font-size: 0.95rem;
+    }
+
+    .progress-wrap {
+      margin: 26px 0 16px;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--muted);
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+    }
+
+    .progress {
+      width: 100%;
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .bar {
+      height: 100%;
+      width: 72%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      box-shadow: 0 0 18px rgba(31,209,165,0.35);
+      border-radius: inherit;
+      animation: loadMove 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes loadMove {
+      from { width: 64%; }
+      to { width: 78%; }
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .btn {
+      text-decoration: none;
+      padding: 14px 22px;
+      border-radius: 14px;
+      font-weight: 700;
+      transition: 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #12b992);
+      color: #04120d;
+      box-shadow: 0 12px 28px rgba(31,209,165,0.25);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 30px rgba(31,209,165,0.32);
+    }
+
+    .btn-secondary {
+      border: 1px solid rgba(255,255,255,0.15);
+      color: var(--text);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.08);
+      transform: translateY(-2px);
+    }
+
+    .footer-note {
+      margin-top: 26px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .tech-line {
+      position: absolute;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(31,209,165,0.8), transparent);
+      opacity: 0.55;
+      animation: floatLine 9s infinite linear;
+    }
+
+    .tech-line.l1 { width: 180px; top: 14%; left: 6%; }
+    .tech-line.l2 { width: 220px; bottom: 14%; right: 8%; animation-delay: 2s; }
+    .tech-line.l3 { width: 120px; top: 55%; right: 18%; animation-delay: 4s; }
+
+    @keyframes floatLine {
+      0% { transform: translateX(0); opacity: 0.2; }
+      50% { transform: translateX(18px); opacity: 0.7; }
+      100% { transform: translateX(0); opacity: 0.2; }
+    }
+
+    @media (max-width: 768px) {
+      body { overflow: auto; }
+      .card { padding: 28px 22px; border-radius: 18px; }
+      .services { gap: 10px; }
+      .service { font-size: 0.9rem; }
+      .gear.g1, .gear.g2, .gear.g3 { opacity: 0.4; }
+    }
+  </style>
+</head>
+<body>
+  <div class="grid"></div>
+  <div class="scan-line"></div>
+
+  <div class="gear-wrap">
+    <div class="gear g1"></div>
+    <div class="gear g2"></div>
+    <div class="gear g3"></div>
+  </div>
+
+  <div class="tech-line l1"></div>
+  <div class="tech-line l2"></div>
+  <div class="tech-line l3"></div>
+
+  <div class="node n1"></div>
+  <div class="node n2"></div>
+  <div class="node n3"></div>
+  <div class="node n4"></div>
+
+  <main class="container">
+    <section class="card">
+      <div class="badge">
+        <span class="dot"></span>
+        Website Under Construction
+      </div>
+
+      <h1>
+        <span class="brand">MRGX Solutions</span><br />
+        Engineering Excellence Is Loading...
+      </h1>
+
+      <p class="subtitle">
+        Our official website is currently under construction. We are preparing a professional digital platform
+        for Engineering Management, Maintenance, Reliability, Asset Management, and CMMS/EAM Solutions.
+      </p>
+
+      <div class="services">
+        <div class="service">Maintenance Management</div>
+        <div class="service">Reliability Engineering</div>
+        <div class="service">Asset Management</div>
+        <div class="service">CMMS / EAM</div>
+        <div class="service">Engineering PMO</div>
+        <div class="service">Technical Review</div>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span>Project Development Status</span>
+          <span>In Progress</span>
+        </div>
+        <div class="progress">
+          <div class="bar"></div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="mailto:management@mrgx-solutions.com">
+          Contact Us
+        </a>
+        <a class="btn btn-secondary" href="mailto:management@mrgx-solutions.com?subject=Inquiry%20from%20MRGX%20Website">
+          management@mrgx-solutions.com
+        </a>
+      </div>
+
+      <p class="footer-note">
+        We appreciate your patience. For inquiries, collaboration opportunities, or early communication,
+        please contact us using our official email address.
+      </p>
+    </section>
+  </main>
+</body>
+</html>
